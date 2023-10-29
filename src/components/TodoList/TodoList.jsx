@@ -17,22 +17,6 @@ const TodoList = () => {
     setTodos(updatedTodos);
   };
 
-  const deleteTodo = (id) => {
-    const updatedTodos = todos.filter((t) => t.id !== id);
-    setTodos(updatedTodos);
-  };
-
-  const editTodo = (id, todoText) => {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === id) {
-        t.data = todoText;
-      }
-      return t;
-    });
-
-    setTodos(updatedTodos);
-  };
-
   return (
     <div className="todo-container">
       {todos.length === 0 ? (
@@ -45,8 +29,6 @@ const TodoList = () => {
               changeFinished={(isCompleted) =>
                 changeFinished(todo, isCompleted)
               }
-              deleteTodo={deleteTodo}
-              editTodo={editTodo}
               key={idx}
             />
           );

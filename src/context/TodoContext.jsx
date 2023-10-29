@@ -1,24 +1,14 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from "react";
-import { v4 as uuid } from "uuid";
+import { createContext, useReducer } from "react";
+import todoReducer from "../reducers/todoReducer";
 
 export const TodoContextObj = createContext();
 
 const TodoContext = ({ children }) => {
-  const [todos, setTodos] = useState([
-    {
-      id: uuid(),
-      data: "Todo 1",
-      isFinished: false,
-    },
-    {
-      id: uuid(),
-      data: "Todo 2",
-      isFinished: false,
-    },
-  ]);
+  const [todos, dispatch] = useReducer(todoReducer, []);
+
   return (
-    <TodoContextObj.Provider value={{ todos, setTodos }}>
+    <TodoContextObj.Provider value={{ todos, dispatch }}>
       {children}
     </TodoContextObj.Provider>
   );

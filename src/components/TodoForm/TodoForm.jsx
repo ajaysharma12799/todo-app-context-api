@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { TodoContextObj } from "../../context/TodoContext";
 
 const TodoForm = () => {
-  const { todos, setTodos } = useContext(TodoContextObj);
+  const { dispatch } = useContext(TodoContextObj);
   const [value, setValue] = useState("");
 
   return (
@@ -29,7 +29,10 @@ const TodoForm = () => {
                 isFinished: false,
               };
 
-              setTodos([...todos, todoObj]);
+              dispatch({
+                type: "add_todo",
+                payload: { todo: todoObj },
+              });
               setValue("");
             }}
           >

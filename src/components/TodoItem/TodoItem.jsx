@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TodoContextObj } from "../../context/TodoContext";
 
 /* eslint-disable react/prop-types */
-const TodoItem = ({ todo, changeFinished, deleteTodo, editTodo }) => {
+const TodoItem = ({ todo, changeFinished }) => {
+  const { dispatch } = useContext(TodoContextObj);
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(todo.data);
 
@@ -26,12 +28,27 @@ const TodoItem = ({ todo, changeFinished, deleteTodo, editTodo }) => {
       <button
         onClick={() => {
           setIsEditing(!isEditing);
-          editTodo(todo.id, editValue);
+          dispatch({
+            type: "edit_todo",
+            payload: {
+              id: todo.id,
+              todoText: editValue,
+            },
+          });
         }}
       >
         {isEditing ? "Save" : "Edit"}
       </button>
-      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+      <button
+        onClick={() => {
+          dispatch({
+            type: "delete_todo",
+            payload: { id: todo.id },
+          });
+        }}
+      >
+        Delete
+      </button>
     </div>
   );
 };
