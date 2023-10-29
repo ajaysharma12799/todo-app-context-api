@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { v4 as uuid } from 'uuid';
+import { useContext, useState } from "react";
+import { v4 as uuid } from "uuid";
+import { TodoContextObj } from "../../context/TodoContext";
 
-const TodoForm = ({ addTodo }) => {
+const TodoForm = () => {
+  const { todos, setTodos } = useContext(TodoContextObj);
   const [value, setValue] = useState("");
+
   return (
     <div>
       <form>
@@ -16,16 +19,22 @@ const TodoForm = ({ addTodo }) => {
           />
         </div>
         <div>
-          <button onClick={(e) => {
-            e.preventDefault();
-            
-            const todoObj = {
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+
+              const todoObj = {
                 id: uuid(),
-                data: value, 
+                data: value,
                 isFinished: false,
-            }
-            addTodo(todoObj);
-          }} >Add</button>
+              };
+
+              setTodos([...todos, todoObj]);
+              setValue("");
+            }}
+          >
+            Add
+          </button>
         </div>
       </form>
     </div>

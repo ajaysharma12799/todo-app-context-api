@@ -1,7 +1,38 @@
 /* eslint-disable react/prop-types */
+import { useContext } from "react";
 import TodoItem from "../TodoItem/TodoItem";
+import { TodoContextObj } from "../../context/TodoContext";
 
-const TodoList = ({ todos, setTodos }) => {
+const TodoList = () => {
+  const { todos, setTodos } = useContext(TodoContextObj);
+
+  const changeFinished = (todo, isCompleted) => {
+    const updatedTodos = todos.map((t) => {
+      if (t.id === todo?.id) {
+        t.isCompleted = isCompleted;
+      }
+      return t;
+    });
+
+    setTodos(updatedTodos);
+  };
+
+  const deleteTodo = (id) => {
+    const updatedTodos = todos.filter((t) => t.id !== id);
+    setTodos(updatedTodos);
+  };
+
+  const editTodo = (id, todoText) => {
+    const updatedTodos = todos.map((t) => {
+      if (t.id === id) {
+        t.data = todoText;
+      }
+      return t;
+    });
+
+    setTodos(updatedTodos);
+  };
+
   return (
     <div className="todo-container">
       {todos.length === 0 ? (
@@ -11,16 +42,11 @@ const TodoList = ({ todos, setTodos }) => {
           return (
             <TodoItem
               todo={todo}
-              changeFinished={(isCompleted) => {
-                const updatedTodos = todos.map((t) => {
-                    if(t.id === todo?.id) {
-                        t.isCompleted = isCompleted;
-                    }
-                    return t;
-                })
-                
-                setTodos(updatedTodos);
-              }}
+              changeFinished={(isCompleted) =>
+                changeFinished(todo, isCompleted)
+              }
+              deleteTodo={deleteTodo}
+              editTodo={editTodo}
               key={idx}
             />
           );
